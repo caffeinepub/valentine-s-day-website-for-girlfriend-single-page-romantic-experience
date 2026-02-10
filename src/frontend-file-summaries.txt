@@ -1,0 +1,21 @@
+{
+  "frontend/src/App.tsx": "Main application component that renders the Valentine's website with hero, love letter, and reasons sections, plus a CTA button to launch the cinematic question journey overlay.",
+  "frontend/src/content/valentineContent.ts": "Centralized content configuration file containing all personalizable text including names, messages, reasons, and the question journey configuration with partner name, question sequence, and centralized background music path.",
+  "frontend/src/components/sections/HeroSection.tsx": "Hero section with animated headline, countdown, decorative hearts, and interactive \"I LOVE YOU ❤️\" button that captures button position, triggers an enhanced burst-mode floating hearts effect originating from the button, and opens WhatsApp with a pre-filled message to +91 8778853617.",
+  "frontend/src/components/sections/LoveLetterSection.tsx": "Love letter section displaying a personalized romantic letter in an elegant card with serif typography.",
+  "frontend/src/components/sections/ReasonsSection.tsx": "Grid of cards displaying reasons for love, each with a heart icon and hover animations.",
+  "frontend/src/components/sections/MemoriesSection.tsx": "Grid of memory cards showcasing special moments with titles, dates, and descriptions.",
+  "frontend/src/components/ValentinesCountdown.tsx": "Countdown timer component showing days/hours/minutes/seconds until Valentine's Day, switching to celebration message on the day.",
+  "frontend/src/components/effects/FloatingHeartsEffect.tsx": "Enhanced floating hearts effect with two modes (ambient/burst), using individual DOM elements with GPU-accelerated transforms for smooth performance; burst mode creates 50 particles with fountain physics originating from a provided position, while ambient mode provides continuous gentle floating hearts.",
+  "frontend/src/components/Footer.tsx": "Footer component with copyright, attribution, and Caffeine.ai link with UTM tracking.",
+  "frontend/src/hooks/useValentinesCountdown.ts": "Custom hook that calculates time remaining until Valentine's Day in user's local timezone, updating every second.",
+  "frontend/src/hooks/useQueries.ts": "Placeholder file for React Query hooks (currently empty as no backend queries are needed).",
+  "frontend/src/index.css": "Global styles with romantic rose/pink OKLCH color system, custom fonts (Playfair Display + Inter), animation utilities including fade-in-zoom, glow effects, escape-button animation, and GPU-optimized heart-particle class for smooth mobile performance.",
+  "frontend/index.html": "HTML entry point with updated title, meta description (using HTML entity for apostrophe), and Google Fonts preconnect links.",
+  "frontend/tailwind.config.js": "Tailwind configuration extended with custom fonts, animations (fade-in-zoom, glow-pulse), box shadows, and design tokens matching the romantic Valentine theme.",
+  "frontend/src/components/sections/QuestionJourneySection.tsx": "Full-screen cinematic question journey overlay that displays questions one at a time with both \"Yes ❤️\" and \"No 🙈\" buttons correctly aligned on the same horizontal row using transform-based positioning for the escape interaction; includes background music with visible retry control and proper play state indication.",
+  "frontend/src/hooks/useBackgroundMusic.ts": "Custom React hook that manages HTMLAudioElement lifecycle for background music with proper async play state tracking, playback blocked detection, and retry capability after user interaction.",
+  "frontend/src/components/effects/SparklesEffect.tsx": "Lightweight sparkle/ambient light accent overlay with subtle twinkling particles using transform/opacity animations, optimized for mobile with pointer-events disabled.",
+  "frontend/src/components/effects/HeartExplosionEffect.tsx": "Heart explosion burst effect that triggers on \"Yes\" click, creating an animated burst of heart particles with physics (velocity, gravity, rotation) that quickly dissipates.",
+  "frontend/src/components/effects/ConfettiEffect.tsx": "Lightweight confetti overlay effect with falling particles of various shapes (circles, squares, triangles) and colors, automatically settling after a short duration."
+}

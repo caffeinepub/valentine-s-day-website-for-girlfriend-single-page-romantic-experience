@@ -1,0 +1,55 @@
+{
+  "kind": "build_request",
+  "title": "Add a more obvious “send love” flying hearts animation",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-25",
+      "text": "Add a clearly noticeable “send love” flying hearts animation that triggers when the user clicks/taps the Hero CTA button labeled exactly “I LOVE YOU ❤️”. The hearts must visibly fly upward (a romantic burst/fountain feel) and remain smooth on mobile.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "I  ALSO WANT THAT SEND SEND LOVE HEART FLYING ALSO"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Clicking/tapping the “I LOVE YOU ❤️” button reliably triggers an on-screen hearts-flying-up animation.",
+        "The hearts animation is visually obvious (not too subtle) and lasts long enough to be noticed before it disappears.",
+        "Animation performance remains smooth on mobile (no major jank; no blocking interactions)."
+      ]
+    },
+    {
+      "id": "REQ-26",
+      "text": "Update the existing hearts effect implementation used by the Hero section so it feels like “sending love” from the user interaction (e.g., increased heart count/intensity and/or originating near the button area) while preserving the existing WhatsApp redirect behavior.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "I  ALSO WANT THAT SEND SEND LOVE HEART FLYING ALSO"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The WhatsApp deep link still opens as it does today when “I LOVE YOU ❤️” is clicked.",
+        "The hearts effect is triggered immediately on click/tap and visually reads as a “send love” action (more intense/clear than before).",
+        "No regressions to other effects/components (Question Journey effects continue working as before)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify any files under frontend/src/components/ui or other paths listed in frontend.immutablePaths.",
+    "Do not fetch images/assets through the backend; keep effects purely frontend."
+  ],
+  "nonGoals": [
+    "Adding new backend canister logic or persistence for effects.",
+    "Changing the WhatsApp phone number or pre-filled message."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-add-a-clearly-noticeable-send-love-flying-hearts-animation-that-triggers-when-the-user-clicks-taps-the-hero-cta-button-labeled-exactly-i-love-you-the-hearts-must-visibly-fly-upward-a-romantic-burst-fountain-feel-and-remain-smooth-on-mobile",
+      "featureTitle": "Add a clearly noticeable “send love” flying hearts animation that triggers when the user clicks/taps the Hero CTA button labeled exactly “I LOVE YOU ❤️”. The hearts must visibly fly upward (a romantic burst/fountain feel) and remain smooth on mobile.",
+      "files": [
+        "frontend/src/components/effects/FloatingHeartsEffect.tsx",
+        "frontend/src/components/sections/HeroSection.tsx",
+        "frontend/src/index.css"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-25"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-existing-hearts-effect-implementation-used-by-the-hero-section-so-it-feels-like-sending-love-from-the-user-interaction-e-g-increased-heart-count-intensity-and-or-originating-near-the-button-area-while-preserving-the-existing-whatsapp-redirect-behavior",
+      "featureTitle": "Update the existing hearts effect implementation used by the Hero section so it feels like “sending love” from the user interaction (e.g., increased heart count/intensity and/or originating near the button area) while preserving the existing WhatsApp redirect behavior.",
+      "files": [
+        "frontend/src/components/effects/FloatingHeartsEffect.tsx",
+        "frontend/src/components/sections/HeroSection.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-26"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

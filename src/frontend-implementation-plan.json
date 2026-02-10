@@ -1,0 +1,54 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "More obvious “send love” flying hearts animation for Hero CTA",
+  "requirements": [
+    {
+      "id": "REQ-25",
+      "summary": "Trigger a clearly noticeable, smooth, upward “send love” hearts fountain when the Hero CTA “I LOVE YOU ❤️” is tapped/clicked.",
+      "acceptanceCriteria": [
+        "Clicking/tapping the “I LOVE YOU ❤️” button reliably triggers an on-screen hearts-flying-up animation.",
+        "The hearts animation is visually obvious (not too subtle) and lasts long enough to be noticed before it disappears.",
+        "Animation performance remains smooth on mobile (no major jank; no blocking interactions)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/sections/HeroSection.tsx",
+          "operation": "modify",
+          "description": "Update the “I LOVE YOU ❤️” CTA interaction to trigger a more obvious hearts-fountain animation on click/tap (e.g., higher particle count, longer duration) while keeping the label exactly “I LOVE YOU ❤️”. Add a ref/measurement so the effect can originate near the button for a “sending love” feel. Ensure the effect triggers immediately and does not block interactions."
+        },
+        {
+          "path": "frontend/src/components/effects/FloatingHeartsEffect.tsx",
+          "operation": "modify",
+          "description": "Enhance the hearts effect to support a distinct, mobile-smooth “burst/fountain” mode suitable for the Hero CTA: allow spawning from a provided origin (near the button), increase density/intensity, and ensure particles fly upward with a romantic burst feel. Improve rendering approach to reduce per-frame DOM churn (avoid heavy innerHTML rewrites where possible) to keep animations smooth on mobile."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add/adjust global keyframes and utility classes needed to support a more noticeable upward hearts-fountain animation (e.g., translate3d-based upward travel, fade/scale timing, optional slight horizontal drift) optimized for mobile (use GPU-friendly transforms and will-change)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-26",
+      "summary": "Update the Hero’s existing hearts effect so it reads as “sending love” from the CTA interaction while preserving WhatsApp redirect behavior and not regressing other effects.",
+      "acceptanceCriteria": [
+        "The WhatsApp deep link still opens as it does today when “I LOVE YOU ❤️” is clicked.",
+        "The hearts effect is triggered immediately on click/tap and visually reads as a “send love” action (more intense/clear than before).",
+        "No regressions to other effects/components (Question Journey effects continue working as before)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/sections/HeroSection.tsx",
+          "operation": "modify",
+          "description": "Preserve the current WhatsApp deep link behavior (same phone number and pre-filled message) while adjusting the hearts trigger so it fires immediately and appears to originate from the CTA area. Ensure any timing/state changes do not delay or break window.open behavior, especially on mobile browsers."
+        },
+        {
+          "path": "frontend/src/components/effects/FloatingHeartsEffect.tsx",
+          "operation": "modify",
+          "description": "Maintain backward-compatible default behavior for existing usages (e.g., QuestionJourneySection ambient hearts) while adding Hero-specific intensity/origin configuration. Confirm that other effects/components relying on FloatingHeartsEffect continue working without visual/behavior regressions."
+        }
+      ]
+    }
+  ]
+}

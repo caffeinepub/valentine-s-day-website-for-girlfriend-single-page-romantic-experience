@@ -1,0 +1,16 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-10T10:28:17.037Z",
+  "summary": "The diff updates the Hero CTA to trigger an intensified, button-originating burst of upward-flying heart particles while preserving the WhatsApp redirect, and enhances the underlying FloatingHeartsEffect to support an obvious “send love” burst animation optimized with GPU-accelerated transforms.",
+  "missing_requirements": [],
+  "hallucinated_features": [],
+  "confidence": 0.72,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/components/effects/FloatingHeartsEffect.tsx",
+    "frontend/src/components/sections/HeroSection.tsx",
+    "frontend/src/index.css",
+    "project_state.json"
+  ]
+}
