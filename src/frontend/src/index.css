@@ -154,14 +154,6 @@
         animation: escapeWobble 0.4s ease-in-out;
     }
     
-    /* Heart particle animation optimization */
-    .heart-particle {
-        backface-visibility: hidden;
-        -webkit-backface-visibility: hidden;
-        perspective: 1000px;
-        -webkit-perspective: 1000px;
-    }
-    
     @keyframes fadeIn {
         from {
             opacity: 0;

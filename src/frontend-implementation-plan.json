@@ -1,52 +1,98 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "More obvious “send love” flying hearts animation for Hero CTA",
+  "title": "Global background music with persistent controls",
   "requirements": [
     {
-      "id": "REQ-25",
-      "summary": "Trigger a clearly noticeable, smooth, upward “send love” hearts fountain when the Hero CTA “I LOVE YOU ❤️” is tapped/clicked.",
+      "id": "REQ-1",
+      "summary": "Mount a single global background-music player at the app root using valentineContent default track so music persists across navigation and overlay state.",
       "acceptanceCriteria": [
-        "Clicking/tapping the “I LOVE YOU ❤️” button reliably triggers an on-screen hearts-flying-up animation.",
-        "The hearts animation is visually obvious (not too subtle) and lasts long enough to be noticed before it disappears.",
-        "Animation performance remains smooth on mobile (no major jank; no blocking interactions)."
+        "When navigating through all app sections and opening/closing the Question Journey overlay, background music continues uninterrupted (no duplicate tracks and no restart unless the user explicitly pauses/stops).",
+        "The global music player uses `/assets/audio/valentine-bg.mp3` as its source by default.",
+        "Music playback state (playing/muted) is managed in one place (single audio element instance for the whole app)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/sections/HeroSection.tsx",
-          "operation": "modify",
-          "description": "Update the “I LOVE YOU ❤️” CTA interaction to trigger a more obvious hearts-fountain animation on click/tap (e.g., higher particle count, longer duration) while keeping the label exactly “I LOVE YOU ❤️”. Add a ref/measurement so the effect can originate near the button for a “sending love” feel. Ensure the effect triggers immediately and does not block interactions."
+          "path": "frontend/src/components/music/BackgroundMusicProvider.tsx",
+          "operation": "create",
+          "description": "Create a React context/provider that instantiates and owns a single HTMLAudioElement (looping background music) using `valentineContent.questionJourney.backgroundMusicPath` as the default source, and exposes global playback state/actions (play/start, pause, resume, mute/unmute, playbackBlocked)."
         },
         {
-          "path": "frontend/src/components/effects/FloatingHeartsEffect.tsx",
-          "operation": "modify",
-          "description": "Enhance the hearts effect to support a distinct, mobile-smooth “burst/fountain” mode suitable for the Hero CTA: allow spawning from a provided origin (near the button), increase density/intensity, and ensure particles fly upward with a romantic burst feel. Improve rendering approach to reduce per-frame DOM churn (avoid heavy innerHTML rewrites where possible) to keep animations smooth on mobile."
+          "path": "frontend/src/components/music/useBackgroundMusicContext.ts",
+          "operation": "create",
+          "description": "Add a small hook to consume the BackgroundMusicProvider context (and throw a clear error if used outside the provider) so all sections (including the overlay) share the same global music state."
         },
         {
-          "path": "frontend/src/index.css",
+          "path": "frontend/src/hooks/useBackgroundMusic.ts",
           "operation": "modify",
-          "description": "Add/adjust global keyframes and utility classes needed to support a more noticeable upward hearts-fountain animation (e.g., translate3d-based upward travel, fade/scale timing, optional slight horizontal drift) optimized for mobile (use GPU-friendly transforms and will-change)."
+          "description": "Refactor the existing background-music hook so it can be used safely by the new provider as a single-instance controller (avoid creating multiple Audio instances when multiple consumers render). Ensure it supports the provider owning the audio element lifecycle."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wrap the app content with BackgroundMusicProvider at the App root so the global audio element is mounted once and remains stable when opening/closing `QuestionJourneySection`."
         }
       ]
     },
     {
-      "id": "REQ-26",
-      "summary": "Update the Hero’s existing hearts effect so it reads as “sending love” from the CTA interaction while preserving WhatsApp redirect behavior and not regressing other effects.",
+      "id": "REQ-2",
+      "summary": "Add persistent, accessible music controls available from any page, including a Start/Resume action when autoplay is blocked.",
       "acceptanceCriteria": [
-        "The WhatsApp deep link still opens as it does today when “I LOVE YOU ❤️” is clicked.",
-        "The hearts effect is triggered immediately on click/tap and visually reads as a “send love” action (more intense/clear than before).",
-        "No regressions to other effects/components (Question Journey effects continue working as before)."
+        "A visible control is available outside the Question Journey overlay to mute/unmute when music is playing.",
+        "If the browser blocks autoplay, a visible “Start/Resume” control is shown after/when the user can interact to enable playback.",
+        "Controls do not obstruct primary CTA buttons on common screen sizes (mobile + desktop)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/sections/HeroSection.tsx",
-          "operation": "modify",
-          "description": "Preserve the current WhatsApp deep link behavior (same phone number and pre-filled message) while adjusting the hearts trigger so it fires immediately and appears to originate from the CTA area. Ensure any timing/state changes do not delay or break window.open behavior, especially on mobile browsers."
+          "path": "frontend/src/components/music/PersistentMusicControls.tsx",
+          "operation": "create",
+          "description": "Create a fixed-position, accessible control cluster that consumes the global music context and renders: (1) mute/unmute when playing, and (2) a prominent “Start/Resume” control when playback is blocked. Use the shadcn-ui Button component for consistent styling and focus states (verify the component's usage instructions before implementing)."
         },
         {
-          "path": "frontend/src/components/effects/FloatingHeartsEffect.tsx",
+          "path": "frontend/src/App.tsx",
           "operation": "modify",
-          "description": "Maintain backward-compatible default behavior for existing usages (e.g., QuestionJourneySection ambient hearts) while adding Hero-specific intensity/origin configuration. Confirm that other effects/components relying on FloatingHeartsEffect continue working without visual/behavior regressions."
+          "description": "Render PersistentMusicControls within the BackgroundMusicProvider scope so controls are available on all page states and remain present when the Question Journey overlay is closed. Position them to minimize overlap with common CTAs on mobile/desktop."
+        }
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "summary": "Update QuestionJourneySection to use the global music state/actions (no local audio instance) while keeping existing overlay button behavior.",
+      "acceptanceCriteria": [
+        "Opening the Question Journey overlay does not create a second audio element or cause overlapping playback.",
+        "The overlay’s existing music buttons (mute/unmute and “Start music” when blocked) control the same global audio playback state.",
+        "Starting the journey triggers global playback (subject to browser autoplay rules) and does not conflict with the persistent controls."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/sections/QuestionJourneySection.tsx",
+          "operation": "modify",
+          "description": "Replace the overlay’s direct `useBackgroundMusic(...)` usage with the shared global music context hook so the overlay controls (mute/unmute and “Start music”/resume) act on the single global audio element and never instantiate a second player. Keep the existing UI patterns and conditional rendering behavior."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Ensure the background music asset exists at the required public path and handle audio load/play failures gracefully without crashing.",
+      "acceptanceCriteria": [
+        "`/assets/audio/valentine-bg.mp3` resolves without a 404 in the built app.",
+        "If the audio fails to load/play, the app remains usable and does not throw uncaught errors; playbackBlocked/disabled state is surfaced via the existing control patterns."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/public/assets/audio/valentine-bg.mp3",
+          "operation": "create",
+          "description": "Add the audio file to the public assets folder so `/assets/audio/valentine-bg.mp3` is served by the built app."
+        },
+        {
+          "path": "frontend/src/components/music/BackgroundMusicProvider.tsx",
+          "operation": "modify",
+          "description": "Add graceful error handling for failed audio loading/playback (e.g., listen for audio error events and treat as playbackBlocked/disabled) so UI controls remain functional and the app avoids uncaught errors."
+        },
+        {
+          "path": "frontend/src/components/music/PersistentMusicControls.tsx",
+          "operation": "modify",
+          "description": "Ensure the persistent controls surface blocked/failed playback states via the same control patterns (show Start/Resume when appropriate, and avoid rendering controls that would throw if audio is unavailable). Use shadcn-ui Button for accessible interactions (verify the component's usage instructions before implementing)."
         }
       ]
     }

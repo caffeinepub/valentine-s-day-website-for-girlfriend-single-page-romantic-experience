@@ -1,41 +1,67 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-10T10:28:17.040Z",
+  "generatedAt": "2026-02-10T10:49:03.756Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 2,
-    "implemented": 2,
+    "total": 4,
+    "implemented": 4,
     "items": [
       {
-        "id": "REQ-25",
-        "summary": "Add a clearly noticeable “send love” flying hearts animation that triggers when the user clicks/taps the Hero CTA button labeled exactly “I LOVE YOU ❤️”. The hearts must visibly fly upward (a romantic burst/fountain feel) and remain smooth on mobile.",
+        "id": "REQ-1",
+        "summary": "Implement a single global background-music player that is mounted at the app root so music can play across the entire site (not only inside the Question Journey overlay). Use the existing audio source path from `valentineContent.questionJourney.backgroundMusicPath` (`/assets/audio/valentine-bg.mp3`) as the default track.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/sections/HeroSection.tsx",
-          "frontend/src/components/effects/FloatingHeartsEffect.tsx",
-          "frontend/src/index.css"
+          "frontend/src/components/music/BackgroundMusicProvider.tsx",
+          "frontend/src/components/music/useBackgroundMusicContext.ts",
+          "frontend/src/hooks/useBackgroundMusic.ts",
+          "frontend/src/App.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/sections/HeroSection.tsx",
-          "frontend/src/components/effects/FloatingHeartsEffect.tsx",
-          "frontend/src/index.css"
+          "frontend/src/components/music/BackgroundMusicProvider.tsx",
+          "frontend/src/components/music/useBackgroundMusicContext.ts",
+          "frontend/src/App.tsx"
         ]
       },
       {
-        "id": "REQ-26",
-        "summary": "Update the existing hearts effect implementation used by the Hero section so it feels like “sending love” from the user interaction (e.g., increased heart count/intensity and/or originating near the button area) while preserving the existing WhatsApp redirect behavior.",
+        "id": "REQ-2",
+        "summary": "Add persistent, accessible music controls that are available from any page state (including when the Question Journey overlay is closed). Controls must include: mute/unmute, and a user-gesture “Start/Resume” action shown when autoplay is blocked by the browser.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/sections/HeroSection.tsx",
-          "frontend/src/components/effects/FloatingHeartsEffect.tsx"
+          "frontend/src/components/music/PersistentMusicControls.tsx",
+          "frontend/src/App.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/sections/HeroSection.tsx",
-          "frontend/src/components/effects/FloatingHeartsEffect.tsx"
+          "frontend/src/components/music/PersistentMusicControls.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Refactor `QuestionJourneySection` to use the global music state and controls (instead of instantiating its own background music instance), while preserving its existing UI behavior (showing mute/unmute while playing, and “Start music” when playback is blocked).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/sections/QuestionJourneySection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/sections/QuestionJourneySection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Ensure the referenced audio asset is present at `frontend/public/assets/audio/valentine-bg.mp3`, and handle missing/failed audio loading gracefully in the UI (e.g., keep controls functional and avoid crashes if the file cannot be loaded).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/assets/audio/valentine-bg.mp3",
+          "frontend/src/components/music/BackgroundMusicProvider.tsx",
+          "frontend/src/components/music/PersistentMusicControls.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/music/BackgroundMusicProvider.tsx",
+          "frontend/src/components/music/PersistentMusicControls.tsx"
         ]
       }
     ]
@@ -45,9 +71,11 @@
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/components/effects/FloatingHeartsEffect.tsx",
-    "frontend/src/components/sections/HeroSection.tsx",
-    "frontend/src/index.css",
+    "frontend/src/App.tsx",
+    "frontend/src/components/music/BackgroundMusicProvider.tsx",
+    "frontend/src/components/music/PersistentMusicControls.tsx",
+    "frontend/src/components/music/useBackgroundMusicContext.ts",
+    "frontend/src/components/sections/QuestionJourneySection.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

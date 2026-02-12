@@ -3,26 +3,15 @@ import { Button } from '@/components/ui/button';
 import ValentinesCountdown from '../ValentinesCountdown';
 import FloatingHeartsEffect from '../effects/FloatingHeartsEffect';
 import { valentineContent } from '../../content/valentineContent';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 
 export default function HeroSection() {
   const [showHearts, setShowHearts] = useState(false);
-  const [buttonPosition, setButtonPosition] = useState<{ x: number; y: number } | null>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleWhatsAppRedirect = () => {
-    // Capture button position for hearts origin
-    if (buttonRef.current) {
-      const rect = buttonRef.current.getBoundingClientRect();
-      setButtonPosition({
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2
-      });
-    }
-
-    // Trigger hearts effect immediately
+    // Trigger hearts effect
     setShowHearts(true);
-    setTimeout(() => setShowHearts(false), 4000);
+    setTimeout(() => setShowHearts(false), 3000);
 
     // WhatsApp deep link with pre-filled message
     const phoneNumber = '918778853617';
@@ -77,7 +66,6 @@ export default function HeroSection() {
         {/* Interactive button with WhatsApp redirect */}
         <div className="pt-4">
           <Button 
-            ref={buttonRef}
             onClick={handleWhatsAppRedirect}
             size="lg"
             className="bg-rose-500 hover:bg-rose-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
@@ -88,7 +76,7 @@ export default function HeroSection() {
       </div>
 
       {/* Floating hearts effect */}
-      {showHearts && <FloatingHeartsEffect mode="burst" origin={buttonPosition} />}
+      {showHearts && <FloatingHeartsEffect />}
     </section>
   );
 }

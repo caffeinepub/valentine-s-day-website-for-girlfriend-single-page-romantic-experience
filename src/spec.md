@@ -1,11 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Make the “I LOVE YOU ❤️” Hero CTA trigger a clearly noticeable “send love” flying-hearts animation while keeping the existing WhatsApp redirect behavior.
+**Goal:** Provide uninterrupted background music across the entire app with persistent controls, using a single global audio instance.
 
 **Planned changes:**
-- Update the Hero CTA click/tap handler to trigger an obvious upward “flying hearts” burst/fountain animation originating near the button.
-- Increase the hearts effect intensity/visibility (e.g., more hearts and longer duration) so it’s clearly noticeable before fading out.
-- Ensure the animation stays smooth on mobile and does not block interactions, while preserving all existing effects (including the Question Journey) and the WhatsApp deep link.
+- Add a single global background-music player mounted at the app root that uses `/assets/audio/valentine-bg.mp3` (from `valentineContent.questionJourney.backgroundMusicPath`) as the default track and keeps playback state in one place.
+- Add persistent, accessible music controls available from any page state (including when the Question Journey overlay is closed): mute/unmute and a “Start/Resume” action for when autoplay is blocked.
+- Refactor `QuestionJourneySection` to use the global music state/control actions (no local/duplicate audio instance) while preserving its existing UI behavior for mute/unmute and “Start music” when blocked.
+- Ensure the audio asset exists at `frontend/public/assets/audio/valentine-bg.mp3` and handle audio load/play failures gracefully without crashing (controls remain usable and reflect blocked/failed state).
 
-**User-visible outcome:** When the user taps/clicks “I LOVE YOU ❤️”, a clear burst of hearts flies upward from the button area and the WhatsApp link still opens as it does today.
+**User-visible outcome:** Music can play continuously while navigating the app and opening/closing the Question Journey overlay, with always-available controls to start/resume (when required) and mute/unmute.

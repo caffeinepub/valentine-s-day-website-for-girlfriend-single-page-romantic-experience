@@ -1,52 +1,87 @@
 {
   "kind": "build_request",
-  "title": "Add a more obvious “send love” flying hearts animation",
+  "title": "Add background music across the entire app",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-25",
-      "text": "Add a clearly noticeable “send love” flying hearts animation that triggers when the user clicks/taps the Hero CTA button labeled exactly “I LOVE YOU ❤️”. The hearts must visibly fly upward (a romantic burst/fountain feel) and remain smooth on mobile.",
+      "id": "REQ-1",
+      "text": "Implement a single global background-music player that is mounted at the app root so music can play across the entire site (not only inside the Question Journey overlay). Use the existing audio source path from `valentineContent.questionJourney.backgroundMusicPath` (`/assets/audio/valentine-bg.mp3`) as the default track.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-3"
         ],
         "quotes": [
-          "I  ALSO WANT THAT SEND SEND LOVE HEART FLYING ALSO"
+          "add music to all pages"
         ]
       },
       "acceptanceCriteria": [
-        "Clicking/tapping the “I LOVE YOU ❤️” button reliably triggers an on-screen hearts-flying-up animation.",
-        "The hearts animation is visually obvious (not too subtle) and lasts long enough to be noticed before it disappears.",
-        "Animation performance remains smooth on mobile (no major jank; no blocking interactions)."
+        "When navigating through all app sections and opening/closing the Question Journey overlay, background music continues uninterrupted (no duplicate tracks and no restart unless the user explicitly pauses/stops).",
+        "The global music player uses `/assets/audio/valentine-bg.mp3` as its source by default.",
+        "Music playback state (playing/muted) is managed in one place (single audio element instance for the whole app)."
       ]
     },
     {
-      "id": "REQ-26",
-      "text": "Update the existing hearts effect implementation used by the Hero section so it feels like “sending love” from the user interaction (e.g., increased heart count/intensity and/or originating near the button area) while preserving the existing WhatsApp redirect behavior.",
+      "id": "REQ-2",
+      "text": "Add persistent, accessible music controls that are available from any page state (including when the Question Journey overlay is closed). Controls must include: mute/unmute, and a user-gesture “Start/Resume” action shown when autoplay is blocked by the browser.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-4"
+          "msg-3"
         ],
         "quotes": [
-          "I  ALSO WANT THAT SEND SEND LOVE HEART FLYING ALSO"
+          "add music to all pages"
         ]
       },
       "acceptanceCriteria": [
-        "The WhatsApp deep link still opens as it does today when “I LOVE YOU ❤️” is clicked.",
-        "The hearts effect is triggered immediately on click/tap and visually reads as a “send love” action (more intense/clear than before).",
-        "No regressions to other effects/components (Question Journey effects continue working as before)."
+        "A visible control is available outside the Question Journey overlay to mute/unmute when music is playing.",
+        "If the browser blocks autoplay, a visible “Start/Resume” control is shown after/when the user can interact to enable playback.",
+        "Controls do not obstruct primary CTA buttons on common screen sizes (mobile + desktop)."
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Refactor `QuestionJourneySection` to use the global music state and controls (instead of instantiating its own background music instance), while preserving its existing UI behavior (showing mute/unmute while playing, and “Start music” when playback is blocked).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-3"
+        ],
+        "quotes": [
+          "add music to all pages"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Opening the Question Journey overlay does not create a second audio element or cause overlapping playback.",
+        "The overlay’s existing music buttons (mute/unmute and “Start music” when blocked) control the same global audio playback state.",
+        "Starting the journey triggers global playback (subject to browser autoplay rules) and does not conflict with the persistent controls."
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Ensure the referenced audio asset is present at `frontend/public/assets/audio/valentine-bg.mp3`, and handle missing/failed audio loading gracefully in the UI (e.g., keep controls functional and avoid crashes if the file cannot be loaded).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-3"
+        ],
+        "quotes": [
+          "add music to all pages"
+        ]
+      },
+      "acceptanceCriteria": [
+        "`/assets/audio/valentine-bg.mp3` resolves without a 404 in the built app.",
+        "If the audio fails to load/play, the app remains usable and does not throw uncaught errors; playbackBlocked/disabled state is surfaced via the existing control patterns."
       ]
     }
   ],
   "constraints": [
-    "Do not modify any files under frontend/src/components/ui or other paths listed in frontend.immutablePaths.",
-    "Do not fetch images/assets through the backend; keep effects purely frontend."
+    "Do not edit any files under `frontend/src/components/ui` (compose them instead).",
+    "Do not modify files listed as immutable in SYSTEM_CONTEXT (e.g., `frontend/src/main.tsx`, `frontend/src/hooks/useInternetIdentity.ts(x)`, `frontend/src/hooks/useActor.ts`)."
   ],
   "nonGoals": [
-    "Adding new backend canister logic or persistence for effects.",
-    "Changing the WhatsApp phone number or pre-filled message."
+    "Backend changes (Motoko) are out of scope.",
+    "Adding multiple tracks, playlists, or per-page different music is out of scope unless explicitly requested."
   ],
   "imageRequirements": {
     "required": [],

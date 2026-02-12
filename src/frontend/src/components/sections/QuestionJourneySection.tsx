@@ -6,7 +6,7 @@ import FloatingHeartsEffect from '@/components/effects/FloatingHeartsEffect';
 import SparklesEffect from '@/components/effects/SparklesEffect';
 import HeartExplosionEffect from '@/components/effects/HeartExplosionEffect';
 import ConfettiEffect from '@/components/effects/ConfettiEffect';
-import { useBackgroundMusic } from '@/hooks/useBackgroundMusic';
+import { useBackgroundMusicContext } from '@/components/music/useBackgroundMusicContext';
 
 interface QuestionJourneySectionProps {
   onClose: () => void;
@@ -18,9 +18,8 @@ export default function QuestionJourneySection({ onClose }: QuestionJourneySecti
   const [noButtonOffset, setNoButtonOffset] = useState({ x: 0, y: 0 });
   const [showFinalReveal, setShowFinalReveal] = useState(false);
   
-  const { isMuted, isPlaying, playbackBlocked, toggleMute, startMusic, resume } = useBackgroundMusic(
-    valentineContent.questionJourney.backgroundMusicPath
-  );
+  // Use global music context instead of local audio instance
+  const { isMuted, isPlaying, playbackBlocked, toggleMute, startMusic, resume } = useBackgroundMusicContext();
   
   const { partnerName, questions, celebrationMessage } = valentineContent.questionJourney;
   const totalSteps = questions.length;
